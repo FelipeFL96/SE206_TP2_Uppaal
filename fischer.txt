@@ -1,0 +1,16 @@
+SE206 - TP UPPAAL - Compte Rendu
+Felipe Fernandes de Lima
+
+
+Pour la construction du graphe qui modélise le algorithme, les instructions présentes à l'énoncé ont été suivis en donnant à chaque instuction un état et en representant une instruction conditionnelle par un branchement du graphe.
+
+La bonne modélisation de l'algorithme de Fischer a dépendu de quelques considérations:
+
+	* L'inclusion de l'état d'attente "Waiting" qui oblige l'éxecution à rester arrêtée pendant au moins une quantité "delay" de temps.
+	* L'inclusion d'une limite pour qu'une éxecution reste dans l'état L1, modélisée par la variable c
+
+L'attente définie par l'algorithme (l'état "waiting") sert à permettre à tous les éxecutions simultanées de manifester leur intention d'entrer à la séction critique (CS), c'est à dire, dans le modèle, que toutes les éxecutions qui ont passé à L1 doivent avoir le temps pour arriver à L2 pendant cette attente. C'est comme ça qu'elles, en changeant la valeur de "has_cs", peuvent indiquer leur intention. Si jamais un fil d'éxecution arrive à L3, sans que toutes les autres qui avaient passé par L1 sont arrivées à L2, ce n'est plus possible de garantir l'exclusion mutuelle à la CS.
+
+Donc pour que l'algorithme de Fischer soit bien synchronisé et, ainsi, fonctionne, il faut assumer que l'éxecution de chaque instruction est assez courte pour que l'attente soit sufisante à que toutes les éxecutions aiant l'intention d'arriver à la CS l'ont manifesté.
+
+Pour modéliser cela a été ajouté l'invariant "exec < c" à L1 et la valeur de "c" a été définie comme inférior ou égal à celle de "delay".
